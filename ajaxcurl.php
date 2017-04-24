@@ -22,4 +22,4 @@
 		$result = json_encode($select);
 		echo $result;
 	}
-?> 
+?>

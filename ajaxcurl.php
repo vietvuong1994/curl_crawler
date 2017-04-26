@@ -10,9 +10,9 @@
 			$html = new VietnamnetCrawler;
 		}
 		
-		$title = $html->getTitle($url,$html->classtitle);
-		$date = $html->getTitle($url,$html->classdate);
-		$content = $html->getTitle($url,$html->classcontent);
+		$title = $html->getTitle($url,$html->title);
+		$date = $html->getTitle($url,$html->date);
+		$content = $html->getTitle($url,$html->content);
 
 		$data = new DB_con;
 		$insert = $data -> insert($title,$date,$content);

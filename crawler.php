@@ -1,62 +1,39 @@
 <?php 
 	
 	class Web_Crawler{
-
-	    function getTitle($link, $att_title){
-	        $ch = curl_init($link);
+		private $xpath ='';
+		function __construct($link){
+			$ch = curl_init($link);
 			curl_setopt($ch, CURLOPT_URL,$link);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
 			 
 			$result = curl_exec($ch);
-			 
 			curl_close($ch);
-			
+
 			$document = new \DomDocument('1.0', 'UTF-8');
 			libxml_use_internal_errors(true);
 			$document->loadHTML($result);
 			libxml_use_internal_errors(false);
 			$xpath = new DomXPath($document);
+
+			$this->xpath = $xpath;
+		}
+		
+	    function getTitle($att_title){
+			$xpath = $this->xpath;
 			$data = $xpath->query($att_title);
 			return $data[0]->textContent;
 	    }
 
-	    function getDate($link, $att_date){
-	    	$ch = curl_init($link);
-			curl_setopt($ch, CURLOPT_URL,$link);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-			 
-			$result = curl_exec($ch);
-			 
-			curl_close($ch);
-			
-			$document = new \DomDocument('1.0', 'UTF-8');
-			libxml_use_internal_errors(true);
-			$document->loadHTML($result);
-			libxml_use_internal_errors(false);
-			$xpath = new DomXPath($document);
+	    function getDate($att_date){
+	    	$xpath = $this->xpath;
 			$data = $xpath->query($att_date);
 			return $data[0]->textContent;
 	    }
 	    function getContent($link, $att_content){
-	        $ch = curl_init($link);
-			curl_setopt($ch, CURLOPT_URL,$link);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-			 
-			$result = curl_exec($ch);
-			 
-			curl_close($ch);
-			
-			$document = new \DomDocument('1.0', 'UTF-8');
-			libxml_use_internal_errors(true);
-			$document->loadHTML($result);
-			libxml_use_internal_errors(false);
-			$xpath = new DomXPath($document);
+	        $xpath = $this->xpath;
 			$data = $xpath->query($att_content);
 			return $data[0]->textContent;
 	    }
@@ -73,8 +50,10 @@
 		var $content = '//div[@id="ArticleContent"]';
 	}
 
-	// $vne = new VnexpressCrawler;
-	// $title = $vne->getContent('http://vnexpress.net/tin-tuc/the-gioi/phan-tich/nguy-co-tu-cach-tung-don-hoa-mu-doi-pho-trieu-tien-cua-trump-3573739.html',$vne->title);
+	// $vne = new VnexpressCrawler('aaaa');
+	// echo($vne->getTitle());
+	// $vne = new VnexpressCrawler('http://vnexpress.net/tin-tuc/the-gioi/phan-tich/nguy-co-tu-cach-tung-don-hoa-mu-doi-pho-trieu-tien-cua-trump-3573739.html');
+	// $title = $vne->getTitle($vne->title);
 	// echo($title) ;
 
 	// $vne = new VietnamnetCrawler;
